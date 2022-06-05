@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  www:
+    build:
+      context: ../..
+      dockerfile: docker/appserver/Dockerfile
+      args:
+        TZ: Etc/UTC
+        LANG: en_US.UTF-8
+        DATA_FOLDER: '/app/data'
+    restart: always
+    networks:
+      - public_net
+      - backend_net
+    volumes:
+      - cmlyst_stage:/app/data
+    ports:
+      - "3080:3000"
+    environment:
+      VIRTUAL_HOST: cmlyst.local
+
+volumes:
+  cmlyst_stage:
+    external:
+      name: cmlyst_stage
+
+networks:
+  public_net:
+    external:
+      name: public_net
+  backend_net:
+
